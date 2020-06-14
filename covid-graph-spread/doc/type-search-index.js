@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"pt.iscte.es2.covid_graph_spread","l":"CovidGraphSpreadApplication"},{"p":"pt.iscte.es2.covid_graph_spread","l":"CovidGraphSpreadService"},{"p":"pt.iscte.es2.covid_graph_spread","l":"Data"}]

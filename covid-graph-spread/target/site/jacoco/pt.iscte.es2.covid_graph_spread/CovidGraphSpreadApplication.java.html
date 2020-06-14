@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CovidGraphSpreadApplication.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">covid-graph-spread</a> &gt; <a href="index.source.html" class="el_package">pt.iscte.es2.covid_graph_spread</a> &gt; <span class="el_source">CovidGraphSpreadApplication.java</span></div><h1>CovidGraphSpreadApplication.java</h1><pre class="source lang-java linenums">package pt.iscte.es2.covid_graph_spread;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+
+import org.eclipse.jgit.api.Git;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * 
+ * @author Catarina Lopes Garcez
+ *
+ */
+
+@SpringBootApplication
+@RestController
+public class CovidGraphSpreadApplication {
+	
+	/**
+	 * Instancia da classe CovidGraphSpreadService
+	 */
+	private CovidGraphSpreadService covidGraphSpreadService;
+
+	/**
+	 * Cria uma nova instancia da classe CovidGraphSpreadApplication
+	 */
+<span class="fc" id="L33">	public CovidGraphSpreadApplication() {</span>
+<span class="fc" id="L34">		covidGraphSpreadService = new CovidGraphSpreadService();</span>
+<span class="fc" id="L35">	}</span>
+
+	/**
+	 * Funcao que permite remover o repositorio local, clonar o repositorio remoto, procurar as versoes de um determinado ficheiro e gerar uma pagina html
+	 * 
+	 * @return html final a mostrar no browser
+	 */
+	@RequestMapping(value = &quot;/covid-graph-spread&quot;, method = RequestMethod.GET,  produces = &quot;text/html&quot;)
+	public String getCovidGraphSpreadTable() {
+
+		// Apaga repositorio local
+<span class="fc" id="L46">		String localRepositoryDirectory = &quot;src/java/resources/repository&quot;;</span>
+<span class="fc" id="L47">		File localRepositoryPath = new File(localRepositoryDirectory);</span>
+<span class="fc" id="L48">		covidGraphSpreadService.deleteLocalRepository(localRepositoryPath);</span>
+ 
+		// Faz clone do repositorio remoto
+<span class="fc" id="L51">		String remoteRepositoryURL = &quot;https://github.com/vbasto-iscte/ESII1920&quot;;</span>
+<span class="fc" id="L52">		Git git = covidGraphSpreadService.cloneRemoteRepository(remoteRepositoryURL, localRepositoryPath);</span>
+
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">		if(git != null) {</span>
+			// Le commits das varias tags que tem o ficheiro covid19spreading.rdf
+<span class="fc" id="L56">			String filename = &quot;covid19spreading.rdf&quot;;</span>
+<span class="fc" id="L57">			List&lt;Data&gt; dataList = covidGraphSpreadService.getFileChanges(git, filename);</span>
+<span class="fc" id="L58">			git.close();</span>
+
+<span class="fc" id="L60">			String templateHtmlFilePath = &quot;src/java/resources/html/template.html&quot;;</span>
+<span class="fc" id="L61">			String html = covidGraphSpreadService.generateHTML(templateHtmlFilePath, dataList);</span>
+<span class="fc" id="L62">			return html;</span>
+
+		} else {
+<span class="nc" id="L65">			return &quot;Git is null...&quot;;</span>
+		}
+	}
+	
+	/**
+	 * Main do programa
+	 * 
+	 * @param args - argumentos iniciais (Nao usados)
+	 */
+	public static void main(String[] args) {
+		//SpringApplication.run(CovidGraphSpreadApplication.class, args);
+<span class="nc" id="L76">		 SpringApplication app = new SpringApplication(CovidGraphSpreadApplication.class);</span>
+<span class="nc" id="L77">	        app.setDefaultProperties(Collections.singletonMap(&quot;server.port&quot;, &quot;8081&quot;));</span>
+<span class="nc" id="L78">	        app.run(args);</span>
+	        
+<span class="nc" id="L80">	}</span>
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Data.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">covid-graph-spread</a> &gt; <a href="index.source.html" class="el_package">pt.iscte.es2.covid_graph_spread</a> &gt; <span class="el_source">Data.java</span></div><h1>Data.java</h1><pre class="source lang-java linenums">package pt.iscte.es2.covid_graph_spread;
+
+import java.util.Date;
+
+/**
+ * 
+ * @author Catarina Lopes Garcez
+ *
+ */
+public class Data {
+	
+	/*
+	 * fileName - Nome do ficheiro
+	 */
+	private String fileName;
+	
+	/**
+	 * fileTag - Nome da tag associada ao ficheiro
+	 */
+	private String fileTag;
+	
+	/**
+	 * tagDescription - Descricao da tag associada ao ficheiro
+	 */
+	private String tagDescription;
+	
+	/**
+	 * spreadVisualizationLink - Link para a plataforma de visualizacao
+	 */
+	private String spreadVisualizationLink;
+	
+	/**
+	 * date - Data do commit
+	 */
+	private Date date;
+	
+	/**
+	 * Cria uma nova instancia da classe Data
+	 * 
+	 * @param fileName - Nome do ficheiro
+	 * @param fileTag - Nome da tag associada ao ficheiro
+	 * @param tagDescription - Descricao da tag associada ao ficheiro
+	 * @param spreadVisualizationLink - Link para a plataforma de visualizacao
+	 * @param date - Data do commit
+	 */
+	public Data(String fileName, String fileTag, String tagDescription, String spreadVisualizationLink, Date date) {
+<span class="fc" id="L47">		super();</span>
+<span class="fc" id="L48">		this.fileName = fileName;</span>
+<span class="fc" id="L49">		this.fileTag = fileTag;</span>
+<span class="fc" id="L50">		this.tagDescription = tagDescription;</span>
+<span class="fc" id="L51">		this.spreadVisualizationLink = spreadVisualizationLink;</span>
+<span class="fc" id="L52">		this.date = date;</span>
+<span class="fc" id="L53">	}</span>
+
+	/**
+	 * Devolve o nome do ficheiro
+	 * 
+	 * @return nome do ficheiro
+	 */
+	public String getFileName() {
+<span class="fc" id="L61">		return fileName;</span>
+	}
+
+	/**
+	 * Devolve o nome da tag associada ao ficheiro
+	 * 
+	 * @return nome da tag
+	 */
+	public String getFileTag() {
+<span class="fc" id="L70">		return fileTag;</span>
+	}
+
+	/**
+	 * Devolve a descricao da tag associada ao ficheiro
+	 * 
+	 * @return descricao da tag
+	 */
+	public String getTagDescription() {
+<span class="fc" id="L79">		return tagDescription;</span>
+	}
+
+	/**
+	 * Devolve o link de visualizacao
+	 * 
+	 * @return link de visualizacao 
+	 */
+	public String getSpreadVisualizationLink() {
+<span class="fc" id="L88">		return spreadVisualizationLink;</span>
+	}
+
+	/**
+	 * Devolve a data do commit
+	 * 
+	 * @return data do commit
+	 */
+	public Date getDate() {
+<span class="fc" id="L97">		return date;</span>
+	}
+
+	@Override
+	public String toString() {
+<span class="fc" id="L102">		return &quot;Data [fileName=&quot; + fileName + &quot;, fileTag=&quot; + fileTag + &quot;, tagDescription=&quot; + tagDescription</span>
+				+ &quot;, spreadVisualizationLink=&quot; + spreadVisualizationLink + &quot;, date=&quot; + date + &quot;]&quot;;
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

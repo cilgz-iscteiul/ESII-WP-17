@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CovidGraphSpreadService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">covid-graph-spread</a> &gt; <a href="index.source.html" class="el_package">pt.iscte.es2.covid_graph_spread</a> &gt; <span class="el_source">CovidGraphSpreadService.java</span></div><h1>CovidGraphSpreadService.java</h1><pre class="source lang-java linenums">package pt.iscte.es2.covid_graph_spread;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.PersonIdent;
+import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevObject;
+import org.eclipse.jgit.revwalk.RevWalk;
+
+/**
+ * 
+ * @author Catarina Lopes Garcez
+ *
+ */
+public class CovidGraphSpreadService {
+
+	/**
+	 * Cria uma nova instancia da classe CovidGraphSpreadService
+	 */
+<span class="fc" id="L28">	public CovidGraphSpreadService() {}</span>
+
+
+	/**
+	 * Procedimento que permite remover recursivamente todos os ficheiros e pastas dentro de um diretorio
+	 * 
+	 * @param localRepositoryPath - raiz do diretorio que qual se pretendem remover todos os ficheiros e pastas
+	 */
+	public void deleteLocalRepository(File localRepositoryPath) {
+		// Remove o repositorio local, caso exista
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">		if(localRepositoryPath.exists()) {</span>
+<span class="fc" id="L39">			deleteDir(localRepositoryPath);</span>
+		}
+<span class="fc" id="L41">		localRepositoryPath.delete();</span>
+<span class="fc" id="L42">	}</span>
+
+	private void deleteDir(File dir) {
+<span class="fc" id="L45">		File[] files = dir.listFiles();</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">		if(files != null) {</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">			for (File file : files) {</span>
+<span class="fc" id="L48">				deleteDir(file);</span>
+			}
+		}
+<span class="fc" id="L51">		dir.delete();</span>
+<span class="fc" id="L52">	}</span>
+
+
+	/**
+	 * Funcao que permite clonar um repositorio remoto para a sua versao local
+	 * 
+	 * @param remoteRepositoryURL - URL do repositorio remoto
+	 * @param localRepositoryPath - Diretoria do repositorio local
+	 * @return instancia da classe Git com o repositorio clonado
+	 */
+	public Git cloneRemoteRepository(String remoteRepositoryURL, File localRepositoryPath) {
+<span class="fc" id="L63">		Git git = null;</span>
+
+		try {
+<span class="fc" id="L66">			git = Git.cloneRepository()</span>
+<span class="fc" id="L67">					.setURI(remoteRepositoryURL)</span>
+<span class="fc" id="L68">					.setDirectory(localRepositoryPath)</span>
+<span class="fc" id="L69">					.setCloneAllBranches(true)</span>
+<span class="fc" id="L70">					.call();</span>
+<span class="pc" id="L71">		} catch (Exception e) {</span>
+<span class="nc" id="L72">			e.printStackTrace();</span>
+		}
+
+<span class="fc" id="L75">		return git;</span>
+	}
+
+
+	/**
+	 * Funcao que permite encontrar todas as versoes de um determinado ficheiro associado a tags
+	 * 
+	 * @param git - repositorio local onde se pretende procurar
+	 * @param filename - nome do ficheiro que se pretende procurar
+	 * @return lista com dados relativos a todas as ocorrencias encontradas
+	 */
+	public List&lt;Data&gt; getFileChanges(Git git, String filename)  {
+<span class="fc" id="L87">		List&lt;Data&gt; dataList = new ArrayList&lt;Data&gt;();</span>
+
+		try {
+<span class="fc" id="L90">			Repository repository = git.getRepository();</span>
+
+<span class="fc" id="L92">			RevWalk revWalk = new RevWalk(repository);</span>
+
+<span class="fc" id="L94">			List&lt;Ref&gt; call = git.tagList().call();</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">			for (Ref ref : call) {</span>
+<span class="fc" id="L96">				System.out.println(&quot;----------------&quot;);</span>
+<span class="fc" id="L97">				System.out.println(&quot;Tag: &quot; + ref + &quot; &quot; + ref.getName() + &quot; &quot; + ref.getObjectId().getName());</span>
+
+<span class="fc" id="L99">				String tagFullName = ref.getName();</span>
+
+<span class="fc" id="L101">				RevObject any = revWalk.parseAny(ref.getObjectId());</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">				if (any != null) {</span>
+
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">					if (any instanceof RevCommit) {</span>
+<span class="fc" id="L105">						System.out.println(&quot;RevCommit&quot;);</span>
+<span class="fc" id="L106">						RevCommit rc = (RevCommit) any;</span>
+
+<span class="fc" id="L108">						PersonIdent authorIdent = rc.getAuthorIdent();</span>
+<span class="fc" id="L109">						Date authorDate = authorIdent.getWhen();</span>
+
+<span class="fc" id="L111">						String baseLink = &quot;http://visualdataweb.de/webvowl/#iri=https://github.com/vbasto-iscte/ESII1920/raw&quot;;</span>
+<span class="fc" id="L112">						String tagName = tagFullName.substring(tagFullName.lastIndexOf(&quot;/&quot;) + 1);</span>
+<span class="fc" id="L113">						String link = baseLink + &quot;/&quot; + tagName + &quot;/&quot; + filename;</span>
+
+<span class="fc" id="L115">						Data data = new Data(filename, tagName, rc.getFullMessage(), link, authorDate);</span>
+<span class="fc" id="L116">						System.out.println(data);</span>
+<span class="fc" id="L117">						dataList.add(data);</span>
+					}
+<span class="fc" id="L119">					any = revWalk.next();</span>
+				}
+			}
+
+<span class="fc" id="L123">			revWalk.close();</span>
+<span class="fc" id="L124">			revWalk.dispose();</span>
+
+<span class="pc" id="L126">		} catch(Exception e) {</span>
+<span class="nc" id="L127">			e.printStackTrace();</span>
+		}
+
+<span class="fc" id="L130">		return dataList;</span>
+	}
+
+
+	/**
+	 * Funcao que permite ler o conteudo de um template html e criar N linhas na sua tabela
+	 * 
+	 * @param templateHtmlFilePath - template html usado
+	 * @param dataList - Lista com N entradas de dados que serao adicionados a tabela
+	 * @return string contendo a versao html final com a tabela e as N linhas de dados
+	 */
+	public String generateHTML(String templateHtmlFilePath, List&lt;Data&gt; dataList) {
+<span class="fc" id="L142">		StringBuilder sb = new StringBuilder();</span>
+		try {
+<span class="fc" id="L144">			Scanner scanner = new Scanner(new File(templateHtmlFilePath));</span>
+
+<span class="fc bfc" id="L146" title="All 2 branches covered.">			while(scanner.hasNextLine()) {</span>
+<span class="fc" id="L147">				String templateLine = scanner.nextLine();</span>
+<span class="fc" id="L148">				System.out.println(templateLine);</span>
+<span class="fc bfc" id="L149" title="All 2 branches covered.">				if(templateLine.contains(&quot;[[DATA]]&quot;)) {</span>
+
+<span class="fc bfc" id="L151" title="All 2 branches covered.">					for (Data data : dataList) {</span>
+<span class="fc" id="L152">						sb.append(&quot;\t\t&lt;tr&gt;\n&quot;);</span>
+<span class="fc" id="L153">						sb.append(&quot;\t\t\t&lt;td&gt;&quot; + data.getDate() + &quot;&lt;/td&gt;\n&quot;);</span>
+<span class="fc" id="L154">						sb.append(&quot;\t\t\t&lt;td&gt;&quot; + data.getFileName() + &quot;&lt;/td&gt;\n&quot;);</span>
+<span class="fc" id="L155">						sb.append(&quot;\t\t\t&lt;td&gt;&quot; + data.getFileTag() + &quot;&lt;/td&gt;\n&quot;);</span>
+<span class="fc" id="L156">						sb.append(&quot;\t\t\t&lt;td&gt;&quot; + data.getTagDescription() + &quot;&lt;/td&gt;\n&quot;);</span>
+<span class="fc" id="L157">						sb.append(&quot;\t\t\t&lt;td&gt;\n&quot;);</span>
+<span class="fc" id="L158">						sb.append(&quot;\t\t\t&lt;a href=\&quot;&quot; + data.getSpreadVisualizationLink() + &quot;\&quot;&gt; link &lt;/a&gt;\n&quot;);</span>
+<span class="fc" id="L159">						sb.append(&quot;\t\t\t&lt;/td&gt;\n&quot;);</span>
+<span class="fc" id="L160">						sb.append(&quot;\t\t&lt;/tr&gt;\n&quot;);</span>
+					}
+
+<span class="fc" id="L163">				} else {</span>
+<span class="fc" id="L164">					sb.append(templateLine);</span>
+				}
+			}
+
+<span class="fc" id="L168">			scanner.close();</span>
+<span class="pc" id="L169">		} catch (FileNotFoundException e) {</span>
+<span class="nc" id="L170">			e.printStackTrace();</span>
+		}
+
+<span class="fc" id="L173">		return sb.toString();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
