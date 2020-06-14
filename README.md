@@ -15,9 +15,13 @@ Júlia Monteiro 82472
 Miguel Mira 82966
 
 
+
+
 Funcionalidades não implementadas:
 
+
 Não foi possivel fazer a intregação das aplicações Java com o Site WordPress.
+
 
 Requisito 1:
 
