@@ -25,12 +25,12 @@ Miguel Mira 82966
 Não foi possível fazer a integração das aplicações Java com o Site WordPress.
 
 
-**Requisito 1:
+** Requisito 1:
 
 
 
 
-**Requisito 2:
+** Requisito 2:
 
 Não foi possível aceder ao wordpress para efetuar a monitorização do site, no entanto foi demonstrada a execução de um exemplo de testes do selenium (ponto a), e foi usada a classe Timer para fazer verificação de 2 em 2 horas (ponto b).
 
