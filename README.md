@@ -16,10 +16,15 @@
 Vai ser enviado tanto a imagem como o container do WordPress, no entanto as operações realizadas abaixo descritas foram com base no container:
 
 Importar container
+
 zcat g17_wp.gz | docker import - g17_wp
+
 Iniciar container
+
 docker start g17_wp
+
 Entrar no container
+
 docker container exec -it g17_wp bash 
 
 
