@@ -45,7 +45,7 @@ Não foi possível aceder ao wordpress para efetuar a monitorização do site, n
 
 **Requisito 3 (Beatriz Gomes) :**
 
-
+Relativamente a este requisito foram implementadas todas as etapas pedidas no enunciado, excepto o acesso ao repositório Covid Scientific Discoveries Repository no WP-CMS (ponto p). Por fim, a integração com o site não foi possível.
 
 **Requisito 4 (Catarina Garcez):**
 
